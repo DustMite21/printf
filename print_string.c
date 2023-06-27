@@ -71,7 +71,7 @@ int print_non_printable(va_list types, char buffer[],
 		return (write(1, "(null)", 6));
 	while (str[k] != '\0')
 	{
-		if (is_printable(str[k]))
+		if (non_printable(str[k]))
 			buffer[k + offset] = str[k];
 		else
 			offset += append_hexa_code(str[k], buffer, k + offset);

@@ -1,117 +1,136 @@
 #include "main.h"
-
+#define HEXADEC_S "0123456789abcdef"
+#define HEXADEC_B "0123456789ABCDEF"
 
 /**
-* non_printable - function that  evaluates if a char is printable
-* @c: Char to be evaluated.
-*
-* Return: 1 if c is printable, 0 otherwise
-*/
-
-int non_printable(char c)
-
+ * print_hex - print hex numbers
+ * @n: number to be printed
+ * @c: character to be tested
+ * Return: num of characteristics
+ */
+int print_hex(unsigned int n, char c)
 {
+	int a;
+	char *str = HEXADEC_S;
 
-if (c >= 32 && c < 127)
+	if (c == 'X')
+		str = HEXADEC_B;
+	if (!(n / 0x10))
+	{
+		putchar(str[n % 0x10]);
+		return (1);
+	}
+	a = 1 + print_hex(n / 0x10, c);
+	putchar(str[n % 0x10]);
+	return (a);
+}
+/**
+ * print_pointhexa - print hex numbers
+ * @ptr: pointer to be printed
+ * Return: number of characteristics
+ */
+int print_pointhexa(void *ptr)
+{
+	int m, s = 0;
+	unsigned long int p;
+	char *str = HEXADEC_S;
 
-return (1);
+	if (!ptr)
+		return (-1);
 
-return (0);
+	p = (unsigned long int)ptr;
+	if (!(p / 16))
+	{
+		s += _printf("0x");
+		putchar(str[p % 16]);
+		return (s + 1);
+	}
+	m = 1 + print_pointhexa((void *)(p / 16));
+	putchar(str[p % 16]);
+	return (m + s);
+}
+/**
+ * print_s - print string and non printable char
+ * @c: string to be printed
+ * Return: number of chars
+ */
 
+int print_s(char *c)
+{
+	int i = 0, s = 0;
+
+	if (!c)
+		return (_printf("(nil)"));
+
+	for (; c[i]; i++)
+	{
+		if (c[i] < 32 || c[i] >= 127)
+		{
+			s += _printf("\\x");
+			if (c[i] < 0x10)
+			{
+				putchar('0');
+			}
+			s += _printf("%X", c[i]);
+		}
+		else
+		{
+			putchar(c[i]);
+		}
+	}
+	return (s + i);
 }
 
-
 /**
-* append_hexa_code - function that append ascci in hexadecimal code to buffer
-* @buffer: Array of chars.
-* @x: Index at which to start appending.
-* @ascii_code: ASSCI CODE.
-* Return: Always 3
-*/
+ * flags - flags
+ * @c: charater of flag
+ * @c1: char specifier
+ * Return: char count
+ */
 
-int append_hexa_code(char ascii_code, char buffer[], int x)
-
+int flags(char c, char c1)
 {
+	int i = -1;
 
-char map_to[] = "0123456789ABCDEF";
-
-/* The hexa format code is always 2 digits long */
-
-if (ascii_code < 0)
-ascii_code *= -1;
-
-
-buffer[x++] = '\\';
-buffer[x++] = 'x';
-buffer[x++] = map_to[ascii_code / 16];
-buffer[x] = map_to[ascii_code % 16];
-return (3);
-
+	if (c == '+' && (c1 == 'd' || c1 == 'i'))
+		i = _printf("%c", c);
+	else if (c == ' ' && (c1 == 'd' || c1 == 'i'))
+		i = _printf("%c", c);
+	else if (c == '#' && c1 == 'o')
+		i = _printf("%c", '0');
+	else if (c == '#' && c1 == 'x')
+		i = _printf("%s", "0x");
+	else if (c == '#' && c1 == 'X')
+		i = _printf("%s", "0X");
+	return (i);
 }
 
-
 /**
-* is_digit - Function that verifies if a char is a digit
-* @c: Char to be evaluated
-*
-* Return: 1 if c is a digit, 0 otherwise
-*/
-
-int is_digit(char c)
-
+ * rot13 - print Ceasar cipher
+ * @c: string to be printed
+ * Return: number of characters processed, or -1 if @c is NULL
+ */
+int rot13(char *c)
 {
+	char r;
+	int i = 0;
 
-if (c >= '0' && c <= '9')
-
-return (1);
-
-
-return (0);
-
-}
-
-
-/**
-* convert_size_number - function that casts a number to the specified size
-* @num: Number to be casted.
-* @size: Number indicating the type to be casted.
-*
-* Return: Casted value of num
-*/
-
-long int convert_size_number(long int num, int size)
-
-{
-
-if (size == S_LONG)
-
-return (num);
-
-else if (size == S_SHORT)
-
-return ((short)num);
-
-
-return ((int)num);
-
-}
-
-
-/**
-* convert_size_unsgnd - function that casts a number to the specified size
-* @num: Number to be casted
-* @size: Number indicating the type to be casted
-*
-* Return: Casted value of num
-*/
-
-long int convert_size_unsgnd(unsigned long int num, int size)
-
-{
-if (size == S_LONG)
-return (num);
-else if (size == S_SHORT)
-return ((unsigned short)num);
-return ((unsigned int)num);
-
+	if (!c)
+		return (-1);
+	for (; c[i]; i++)
+	{
+		if (c[i] >= 'a' && c[i] <= 'z')
+		{
+			r = (((c[i] - 'a') + 13) % 26);
+			_printf("%c", (r + 'a'));
+		}
+		else if (c[i] >= 'A' && c[i] <= 'Z')
+		{
+			r = (((c[i] - 'A') + 13) % 26);
+			_printf("%c", (r + 'A'));
+		}
+		else
+			_printf("%c", c[i]);
+	}
+	return (i);
 }
