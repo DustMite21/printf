@@ -17,7 +17,7 @@ const int FLAGS_ARR[] = {F_MINUS, F_PLUS, F_ZERO, F_HASH, F_SPACE, 0};
 
 for (curr_b = *i + 1; format[curr_b] != '\0'; curr_b++)
 {
-for (k = 0; FLAGS_CH[j] != '\0'; k++)
+for (k = 0; FLAGS_CH[k] != '\0'; k++)
 if (format[curr_b] == FLAGS_CH[k])
 {
 flags |= FLAGS_ARR[k];

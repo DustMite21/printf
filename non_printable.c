@@ -24,12 +24,12 @@ return (0);
 /**
 * append_hexa_code - function that append ascci in hexadecimal code to buffer
 * @buffer: Array of chars.
-* @i: Index at which to start appending.
+* @x: Index at which to start appending.
 * @ascii_code: ASSCI CODE.
 * Return: Always 3
 */
 
-int append_hexa_code(char ascii_code, char buffer[], int i)
+int append_hexa_code(char ascii_code, char buffer[], int x)
 
 {
 
